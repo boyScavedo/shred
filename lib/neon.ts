@@ -1,11 +1,14 @@
 import { neon } from "@neondatabase/serverless"
 
-let sql: ReturnType<typeof neon> | null = null
+export type NeonQueryFn = (query: string, params?: unknown[]) => Promise<unknown[]>
 
-export function getNeon(): ReturnType<typeof neon> | null {
-  if (sql) return sql
+let _query: NeonQueryFn | null = null
+
+export function getNeon(): NeonQueryFn | null {
+  if (_query) return _query
   const url = process.env.DATABASE_URL
   if (!url) return null
-  sql = neon(url)
-  return sql
+  const sql = neon(url)
+  _query = (query, params) => sql.query(query, params) as Promise<unknown[]>
+  return _query
 }

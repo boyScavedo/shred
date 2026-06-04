@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cookies, headers } from "next/headers"
-import { getNeon } from "@/lib/neon"
+import { getNeon, type NeonQueryFn } from "@/lib/neon"
 import { verifySession, getAuthSecret } from "@/lib/session"
-
-type SqlFn = (query: string, params?: unknown[]) => Promise<unknown[]>
 
 const ALLOWED_ORIGINS = new Set([
   process.env.NEXT_PUBLIC_APP_URL,
@@ -55,7 +53,7 @@ interface ItemResult {
 }
 
 async function processItem(item: SyncItem): Promise<ItemResult> {
-  const sql = getNeon() as unknown as SqlFn | null
+  const sql: NeonQueryFn | null = getNeon()
   if (!sql) return { id: item.id, success: false, error: "no DATABASE_URL" }
 
   const allowedCols = TABLE_COLUMNS[item.table_name]

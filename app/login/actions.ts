@@ -4,12 +4,11 @@ import { timingSafeEqual } from "crypto"
 import { cookies, headers } from "next/headers"
 import { getAuthPassword } from "@/lib/env"
 import { signSession, getAuthSecret } from "@/lib/session"
-import { getNeon } from "@/lib/neon"
+import { getNeon, type NeonQueryFn } from "@/lib/neon"
 
 const MAX_ATTEMPTS = 10
 const WINDOW_MINUTES = 15
 
-type SqlFn = (query: string, params?: unknown[]) => Promise<{ succeeded?: boolean }[]>
 
 async function getClientIp(): Promise<string> {
   const h = await headers()
@@ -21,7 +20,7 @@ async function getClientIp(): Promise<string> {
 }
 
 async function isRateLimited(ip: string): Promise<boolean> {
-  const sql = getNeon() as unknown as SqlFn | null
+  const sql: NeonQueryFn | null = getNeon()
   if (!sql) return false
   try {
     const rows = await sql(
@@ -38,7 +37,7 @@ async function isRateLimited(ip: string): Promise<boolean> {
 }
 
 async function recordAttempt(ip: string, succeeded: boolean): Promise<void> {
-  const sql = getNeon() as unknown as SqlFn | null
+  const sql: NeonQueryFn | null = getNeon()
   if (!sql) return
   try {
     await sql(
