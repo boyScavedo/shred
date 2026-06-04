@@ -94,3 +94,11 @@ CREATE TABLE IF NOT EXISTS user_profile (
   target_bodyweight_kg REAL,
   updated_at TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS login_attempts (
+  id BIGSERIAL PRIMARY KEY,
+  ip TEXT NOT NULL,
+  succeeded BOOLEAN NOT NULL DEFAULT false,
+  attempted_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_login_attempts_ip_time ON login_attempts (ip, attempted_at);

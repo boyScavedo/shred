@@ -1,11 +1,11 @@
-import { Pool } from "@neondatabase/serverless"
+import { neon } from "@neondatabase/serverless"
 
-let pool: Pool | null = null
+let sql: ReturnType<typeof neon> | null = null
 
-export function getNeonPool(): Pool | null {
-  if (pool) return pool
+export function getNeon(): ReturnType<typeof neon> | null {
+  if (sql) return sql
   const url = process.env.DATABASE_URL
   if (!url) return null
-  pool = new Pool({ connectionString: url })
-  return pool
+  sql = neon(url)
+  return sql
 }

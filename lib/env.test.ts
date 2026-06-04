@@ -23,9 +23,10 @@ describe("env", () => {
     expect(getAuthPassword()).toBe("testpass")
   })
 
-  it("reads NEXT_PUBLIC_AUTH_PASSWORD as fallback", () => {
+  it("throws when only NEXT_PUBLIC_AUTH_PASSWORD is set (not a valid fallback)", () => {
+    delete process.env.AUTH_PASSWORD
     process.env.NEXT_PUBLIC_AUTH_PASSWORD = "publicpass"
     const { getAuthPassword } = require("./env")
-    expect(getAuthPassword()).toBe("publicpass")
+    expect(() => getAuthPassword()).toThrow("AUTH_PASSWORD not set")
   })
 })

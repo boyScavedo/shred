@@ -1,18 +1,19 @@
-const SESSION_KEY = "shred_session"
+// Cookie is httpOnly — JS cannot read or clear it directly.
+// Server middleware (proxy.ts) enforces auth on every request.
 
-export function logout(): void {
+export async function logout(): Promise<void> {
+  await fetch("/api/auth/logout", { method: "POST" })
   if (typeof window !== "undefined") {
-    document.cookie = `${SESSION_KEY}=; path=/; max-age=0`
-  }
-}
-
-export function isAuthenticated(): boolean {
-  if (typeof window === "undefined") return false
-  return document.cookie.split(";").some((c) => c.trim() === `${SESSION_KEY}=authenticated`)
-}
-
-export function requireAuth(): void {
-  if (!isAuthenticated() && typeof window !== "undefined") {
     window.location.href = "/login"
   }
 }
+
+// Always returns true — if session were invalid, server would have
+// redirected to /login before the page rendered.
+export function isAuthenticated(): boolean {
+  return true
+}
+
+// no-op: proxy.ts handles enforcement
+export function requireAuth(): void {}
+

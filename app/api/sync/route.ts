@@ -1,17 +1,44 @@
 import { NextRequest, NextResponse } from "next/server"
-import { cookies } from "next/headers"
-import { getNeonPool } from "@/lib/neon"
+import { cookies, headers } from "next/headers"
+import { getNeon } from "@/lib/neon"
+import { verifySession, getAuthSecret } from "@/lib/session"
 
-const ALLOWED_TABLES = new Set([
-  "exercises",
-  "bodyweight_progressions",
-  "workout_sessions",
-  "workout_exercises",
-  "workout_sets",
-  "exercise_templates",
-  "template_exercises",
-  "user_profile",
-])
+type SqlFn = (query: string, params?: unknown[]) => Promise<unknown[]>
+
+const ALLOWED_ORIGINS = new Set([
+  process.env.NEXT_PUBLIC_APP_URL,
+  "http://localhost:3000",
+  "http://localhost:3001",
+].filter(Boolean) as string[])
+
+const TABLE_COLUMNS: Record<string, readonly string[]> = {
+  exercises: [
+    "id", "name", "mechanics", "movement_pattern", "resistance_type", "load_type",
+    "muscle_group_primary", "muscle_group_secondary", "prescription_mode",
+    "default_sets", "default_reps_min", "default_reps_max", "default_duration_secs",
+    "bodyweight_progression_id", "equipment_required", "created_at", "updated_at",
+  ],
+  bodyweight_progressions: ["id", "exercise_id", "variation_name", "sort_order"],
+  workout_sessions: [
+    "id", "started_at", "completed_at", "duration_secs",
+    "pre_workout_calories", "calories_burned_estimate", "notes", "updated_at",
+  ],
+  workout_exercises: ["id", "session_id", "exercise_id", "sort_order", "notes", "updated_at"],
+  workout_sets: [
+    "id", "workout_exercise_id", "set_number", "reps", "weight_kg",
+    "duration_secs", "rpe", "completed", "completed_at", "updated_at",
+  ],
+  exercise_templates: ["id", "name", "description", "created_at", "updated_at"],
+  template_exercises: [
+    "id", "template_id", "exercise_id", "sort_order", "target_sets",
+    "target_reps_min", "target_reps_max", "target_weight_kg",
+    "rest_secs", "rest_after_exercise_secs", "updated_at",
+  ],
+  user_profile: [
+    "id", "goal", "body_goal", "experience", "days_per_week",
+    "equipment", "bodyweight_kg", "target_bodyweight_kg", "updated_at",
+  ],
+}
 
 interface SyncItem {
   id: string
@@ -28,40 +55,58 @@ interface ItemResult {
 }
 
 async function processItem(item: SyncItem): Promise<ItemResult> {
-  const pool = getNeonPool()
-  if (!pool) return { id: item.id, success: false, error: "no DATABASE_URL" }
-  if (!ALLOWED_TABLES.has(item.table_name)) {
+  const sql = getNeon() as unknown as SqlFn | null
+  if (!sql) return { id: item.id, success: false, error: "no DATABASE_URL" }
+
+  const allowedCols = TABLE_COLUMNS[item.table_name]
+  if (!allowedCols) {
     return { id: item.id, success: false, error: `table not allowed: ${item.table_name}` }
   }
 
-  const client = await pool.connect()
   try {
     if (item.operation === "delete") {
-      await client.query(`DELETE FROM ${item.table_name} WHERE id = $1`, [item.record_id])
+      await sql(`DELETE FROM ${item.table_name} WHERE id = $1`, [item.record_id])
     } else {
-      const cols = Object.keys(item.payload)
-      const vals = Object.values(item.payload)
+      // Only keep columns that are in the whitelist
+      const cols = Object.keys(item.payload).filter((c) => allowedCols.includes(c))
+      const vals = cols.map((c) => item.payload[c])
+
+      if (cols.length === 0) {
+        return { id: item.id, success: false, error: "no valid columns in payload" }
+      }
+
       const placeholders = cols.map((_, i) => `$${i + 1}`).join(", ")
       const updates = cols
         .filter((c) => c !== "id")
         .map((c) => `${c} = EXCLUDED.${c}`)
         .join(", ")
       const q = `INSERT INTO ${item.table_name} (${cols.join(", ")}) VALUES (${placeholders}) ON CONFLICT (id) DO UPDATE SET ${updates}`
-      await client.query(q, vals)
+      await sql(q, vals)
     }
     return { id: item.id, success: true }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
     return { id: item.id, success: false, error: msg }
-  } finally {
-    client.release()
   }
 }
 
 export async function POST(request: NextRequest) {
+  // CSRF: reject cross-origin requests
+  const h = await headers()
+  const origin = h.get("origin") ?? ""
+  if (origin && !ALLOWED_ORIGINS.has(origin)) {
+    return NextResponse.json({ error: "forbidden" }, { status: 403 })
+  }
+
   const jar = await cookies()
   const session = jar.get("shred_session")
-  if (!session || session.value !== "authenticated") {
+  let secret: string
+  try {
+    secret = getAuthSecret()
+  } catch {
+    return NextResponse.json({ error: "server misconfigured" }, { status: 500 })
+  }
+  if (!session || !verifySession(session.value, secret)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 })
   }
 

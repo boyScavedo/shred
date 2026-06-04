@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import { verifySession } from "@/lib/session"
 
 const protectedPaths = [
   "/dashboard", "/workout", "/history", "/exercises",
@@ -11,8 +12,11 @@ export function proxy(request: NextRequest) {
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p))
 
   if (isProtected) {
+    const secret = process.env.AUTH_SECRET
     const session = request.cookies.get("shred_session")
-    if (!session || session.value !== "authenticated") {
+    const valid = !!secret && !!session && verifySession(session.value, secret)
+
+    if (!valid) {
       return NextResponse.redirect(new URL("/login", request.url))
     }
   }
