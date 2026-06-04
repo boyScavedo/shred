@@ -109,8 +109,8 @@ export default function ProfilePage() {
     setTimeout(() => setSaved(false), 2000)
   }
 
-  const handleLogout = () => {
-    logout()
+  const handleLogout = async () => {
+    await logout()
     router.push("/login")
   }
 

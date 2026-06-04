@@ -164,8 +164,8 @@ export default function ProfilePage() {
   const { profile } = useUserProfile()
   const { stats, sessions, loading } = useProfileData()
 
-  const handleLogout = () => {
-    logout()
+  const handleLogout = async () => {
+    await logout()
     router.push("/login")
   }
 
