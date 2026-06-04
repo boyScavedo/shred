@@ -8,6 +8,8 @@ const withSerwist = withSerwistInit({
 })
 
 const securityHeaders = [
+  // Tell every crawler/bot: do not index, follow, archive, or snippet this site
+  { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-XSS-Protection", value: "1; mode=block" },

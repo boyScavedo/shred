@@ -1,4 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="64" fill="#0a0a0a"/>
-  <text x="256" y="320" font-family="JetBrains Mono, monospace" font-size="256" font-weight="bold" fill="#4f9cf7" text-anchor="middle">S</text>
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f9cf7"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="#0a0a0a"/>
+  <rect x="148" y="232" width="216" height="48" rx="24" fill="url(#g)"/>
+  <rect x="72" y="176" width="50" height="160" rx="16" fill="url(#g)"/>
+  <rect x="122" y="200" width="26" height="112" rx="10" fill="#1d4ed8"/>
+  <rect x="364" y="200" width="26" height="112" rx="10" fill="#1d4ed8"/>
+  <rect x="390" y="176" width="50" height="160" rx="16" fill="url(#g)"/>
+  <text x="256" y="432" font-family="system-ui, sans-serif" font-size="60" font-weight="900" fill="#4f9cf7" text-anchor="middle" letter-spacing="16">SHRED</text>
 </svg>

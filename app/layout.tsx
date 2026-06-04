@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   title: "SHRED",
   description: "Smart workout tracker",
   manifest: "/manifest.json",
+  robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
+  icons: { icon: "/icon-192.svg", apple: "/icon-192.svg" },
 }
 
 export const viewport: Viewport = {
