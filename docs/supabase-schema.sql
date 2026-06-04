@@ -1,5 +1,5 @@
 -- SHRED — Supabase Schema Migration
--- Run this in the Supabase Dashboard SQL Editor (https://supabase.com/dashboard/project/cwgpcstuvlmmcnpxowrr/sql/new)
+-- Run this in the Supabase Dashboard SQL Editor (https://supabase.com/dashboard/project/<your-project-id>/sql/new)
 -- Creates all tables under the `shred` schema
 
 -- 1. Create the schema

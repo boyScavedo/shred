@@ -83,8 +83,10 @@ async function processItem(item: SyncItem): Promise<ItemResult> {
     }
     return { id: item.id, success: true }
   } catch (err) {
+    // Log real error server-side only — never send DB internals to client
     const msg = err instanceof Error ? err.message : String(err)
-    return { id: item.id, success: false, error: msg }
+    console.error(`[sync] ${item.table_name}/${item.record_id}: ${msg}`)
+    return { id: item.id, success: false, error: "sync_failed" }
   }
 }
 

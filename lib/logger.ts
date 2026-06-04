@@ -7,11 +7,19 @@ const COLORS: Record<Level, string> = {
   error: "#ef4444",
 }
 
+const IS_PROD = process.env.NODE_ENV === "production"
+// In production only errors are shown — no info/debug leaking sync internals
+const ENABLED_LEVELS: Set<Level> = IS_PROD
+  ? new Set(["error"])
+  : new Set(["debug", "info", "warn", "error"])
+
 function log(level: Level, module: string, msg: string, data?: unknown) {
   if (typeof window === "undefined") return
+  if (!ENABLED_LEVELS.has(level)) return
   const style = `color:${COLORS[level]};font-weight:bold`
   const prefix = `%c[${level.toUpperCase()}] [${module}]`
-  if (data !== undefined) {
+  // In production, strip raw data from logs to avoid leaking DB internals
+  if (data !== undefined && !IS_PROD) {
     console[level === "debug" ? "log" : level](prefix, style, msg, data)
   } else {
     console[level === "debug" ? "log" : level](prefix, style, msg)
