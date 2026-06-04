@@ -1,5 +1,4 @@
--- SHRED — Neon Schema
--- Run once in Neon SQL Editor (console.neon.tech)
+/* SHRED — Neon Schema. Run once in Neon SQL Editor (console.neon.tech) */
 
 CREATE TABLE IF NOT EXISTS exercises (
   id TEXT PRIMARY KEY,
