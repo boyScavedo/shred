@@ -1,0 +1,281 @@
+import type { Exercise, BodyweightProgression } from "@/types"
+
+export const SEED_EXERCISES: Exercise[] = [
+  // ===== PUSH =====
+  {
+    id: "incline-push-up", name: "Incline Push-up",
+    mechanics: "compound", movement_pattern: "push", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "chest", muscle_group_secondary: null,
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 10, default_reps_max: 15,
+    default_duration_secs: null, bodyweight_progression_id: "prog-push", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "push-up", name: "Push-up",
+    mechanics: "compound", movement_pattern: "push", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "chest", muscle_group_secondary: "triceps",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 8, default_reps_max: 12,
+    default_duration_secs: null, bodyweight_progression_id: "prog-push", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "wide-push-up", name: "Wide Push-up",
+    mechanics: "compound", movement_pattern: "push", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "chest", muscle_group_secondary: "shoulders",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 8, default_reps_max: 12,
+    default_duration_secs: null, bodyweight_progression_id: "prog-push", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "decline-push-up", name: "Decline Push-up",
+    mechanics: "compound", movement_pattern: "push", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "chest", muscle_group_secondary: "shoulders",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 8, default_reps_max: 12,
+    default_duration_secs: null, bodyweight_progression_id: "prog-push", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "diamond-push-up", name: "Diamond Push-up",
+    mechanics: "compound", movement_pattern: "push", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "triceps", muscle_group_secondary: "chest",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 6, default_reps_max: 10,
+    default_duration_secs: null, bodyweight_progression_id: "prog-push", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "pike-push-up", name: "Pike Push-up",
+    mechanics: "compound", movement_pattern: "push", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "shoulders", muscle_group_secondary: "triceps",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 6, default_reps_max: 10,
+    default_duration_secs: null, bodyweight_progression_id: "prog-push", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "handstand-hold", name: "Handstand Hold",
+    mechanics: "isolation", movement_pattern: "push", resistance_type: "bodyweight",
+    load_type: "duration", muscle_group_primary: "shoulders", muscle_group_secondary: null,
+    prescription_mode: "bodyweight_duration", default_sets: 3, default_reps_min: null, default_reps_max: null,
+    default_duration_secs: 30, bodyweight_progression_id: null, equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "chair-dips", name: "Chair Dips",
+    mechanics: "compound", movement_pattern: "push", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "triceps", muscle_group_secondary: "chest",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 8, default_reps_max: 15,
+    default_duration_secs: null, bodyweight_progression_id: null, equipment_required: ["chair"],
+    created_at: new Date().toISOString(),
+  },
+
+  // ===== PULL =====
+  {
+    id: "dead-hang", name: "Dead Hang",
+    mechanics: "isolation", movement_pattern: "pull", resistance_type: "bodyweight",
+    load_type: "duration", muscle_group_primary: "back", muscle_group_secondary: "forearms",
+    prescription_mode: "bodyweight_duration", default_sets: 3, default_reps_min: null, default_reps_max: null,
+    default_duration_secs: 30, bodyweight_progression_id: "prog-pull", equipment_required: ["pull-up bar"],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "scapular-pull", name: "Scapular Pull",
+    mechanics: "isolation", movement_pattern: "pull", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "back", muscle_group_secondary: null,
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 8, default_reps_max: 12,
+    default_duration_secs: null, bodyweight_progression_id: "prog-pull", equipment_required: ["pull-up bar"],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "bodyweight-row", name: "Bodyweight Row (Table)",
+    mechanics: "compound", movement_pattern: "pull", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "back", muscle_group_secondary: "biceps",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 8, default_reps_max: 12,
+    default_duration_secs: null, bodyweight_progression_id: null, equipment_required: ["table"],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "towel-row", name: "Towel Row",
+    mechanics: "compound", movement_pattern: "pull", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "back", muscle_group_secondary: "biceps",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 8, default_reps_max: 12,
+    default_duration_secs: null, bodyweight_progression_id: null, equipment_required: ["towel"],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "superman-hold", name: "Superman Hold",
+    mechanics: "isolation", movement_pattern: "pull", resistance_type: "bodyweight",
+    load_type: "duration", muscle_group_primary: "back", muscle_group_secondary: "glutes",
+    prescription_mode: "bodyweight_duration", default_sets: 3, default_reps_min: null, default_reps_max: null,
+    default_duration_secs: 30, bodyweight_progression_id: null, equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+
+  // ===== SQUAT =====
+  {
+    id: "bodyweight-squat", name: "Bodyweight Squat",
+    mechanics: "compound", movement_pattern: "squat", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "quads", muscle_group_secondary: "glutes",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 12, default_reps_max: 20,
+    default_duration_secs: null, bodyweight_progression_id: "prog-squat", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "narrow-squat", name: "Narrow Squat",
+    mechanics: "compound", movement_pattern: "squat", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "quads", muscle_group_secondary: null,
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 10, default_reps_max: 15,
+    default_duration_secs: null, bodyweight_progression_id: "prog-squat", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "wide-squat", name: "Wide Squat",
+    mechanics: "compound", movement_pattern: "squat", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "glutes", muscle_group_secondary: "quads",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 10, default_reps_max: 15,
+    default_duration_secs: null, bodyweight_progression_id: "prog-squat", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "bulgarian-split-squat", name: "Bulgarian Split Squat",
+    mechanics: "compound", movement_pattern: "squat", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "quads", muscle_group_secondary: "glutes",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 6, default_reps_max: 10,
+    default_duration_secs: null, bodyweight_progression_id: "prog-squat", equipment_required: ["chair"],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "squat-hold", name: "Squat Hold",
+    mechanics: "isolation", movement_pattern: "squat", resistance_type: "bodyweight",
+    load_type: "duration", muscle_group_primary: "quads", muscle_group_secondary: null,
+    prescription_mode: "bodyweight_duration", default_sets: 3, default_reps_min: null, default_reps_max: null,
+    default_duration_secs: 45, bodyweight_progression_id: null, equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+
+  // ===== HINGE =====
+  {
+    id: "glute-bridge", name: "Glute Bridge",
+    mechanics: "compound", movement_pattern: "hinge", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "glutes", muscle_group_secondary: "hamstrings",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 12, default_reps_max: 20,
+    default_duration_secs: null, bodyweight_progression_id: "prog-hinge", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "single-leg-glute-bridge", name: "Single-leg Glute Bridge",
+    mechanics: "compound", movement_pattern: "hinge", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "glutes", muscle_group_secondary: "hamstrings",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 8, default_reps_max: 12,
+    default_duration_secs: null, bodyweight_progression_id: "prog-hinge", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "hip-thrust", name: "Hip Thrust",
+    mechanics: "compound", movement_pattern: "hinge", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "glutes", muscle_group_secondary: "hamstrings",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 10, default_reps_max: 15,
+    default_duration_secs: null, bodyweight_progression_id: null, equipment_required: ["chair"],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "bodyweight-good-morning", name: "Bodyweight Good Morning",
+    mechanics: "compound", movement_pattern: "hinge", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "hamstrings", muscle_group_secondary: "back",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 10, default_reps_max: 15,
+    default_duration_secs: null, bodyweight_progression_id: null, equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+
+  // ===== CORE =====
+  {
+    id: "dead-bug", name: "Dead Bug",
+    mechanics: "isolation", movement_pattern: "core", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "abs", muscle_group_secondary: null,
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 8, default_reps_max: 12,
+    default_duration_secs: null, bodyweight_progression_id: null, equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "plank", name: "Plank",
+    mechanics: "isolation", movement_pattern: "core", resistance_type: "bodyweight",
+    load_type: "duration", muscle_group_primary: "abs", muscle_group_secondary: null,
+    prescription_mode: "bodyweight_duration", default_sets: 3, default_reps_min: null, default_reps_max: null,
+    default_duration_secs: 45, bodyweight_progression_id: "prog-core", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "side-plank", name: "Side Plank",
+    mechanics: "isolation", movement_pattern: "core", resistance_type: "bodyweight",
+    load_type: "duration", muscle_group_primary: "abs", muscle_group_secondary: null,
+    prescription_mode: "bodyweight_duration", default_sets: 3, default_reps_min: null, default_reps_max: null,
+    default_duration_secs: 30, bodyweight_progression_id: null, equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "hollow-hold", name: "Hollow Hold",
+    mechanics: "isolation", movement_pattern: "core", resistance_type: "bodyweight",
+    load_type: "duration", muscle_group_primary: "abs", muscle_group_secondary: null,
+    prescription_mode: "bodyweight_duration", default_sets: 3, default_reps_min: null, default_reps_max: null,
+    default_duration_secs: 30, bodyweight_progression_id: "prog-core", equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "leg-raises", name: "Leg Raises",
+    mechanics: "isolation", movement_pattern: "core", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "abs", muscle_group_secondary: null,
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 10, default_reps_max: 15,
+    default_duration_secs: null, bodyweight_progression_id: null, equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "flutter-kicks", name: "Flutter Kicks",
+    mechanics: "isolation", movement_pattern: "core", resistance_type: "bodyweight",
+    load_type: "duration", muscle_group_primary: "abs", muscle_group_secondary: "quads",
+    prescription_mode: "bodyweight_duration", default_sets: 3, default_reps_min: null, default_reps_max: null,
+    default_duration_secs: 30, bodyweight_progression_id: null, equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "bird-dog", name: "Bird Dog",
+    mechanics: "isolation", movement_pattern: "core", resistance_type: "bodyweight",
+    load_type: "reps", muscle_group_primary: "abs", muscle_group_secondary: "back",
+    prescription_mode: "bodyweight_reps", default_sets: 3, default_reps_min: 8, default_reps_max: 12,
+    default_duration_secs: null, bodyweight_progression_id: null, equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "mountain-climbers", name: "Mountain Climbers",
+    mechanics: "compound", movement_pattern: "core", resistance_type: "bodyweight",
+    load_type: "duration", muscle_group_primary: "abs", muscle_group_secondary: "shoulders",
+    prescription_mode: "bodyweight_duration", default_sets: 3, default_reps_min: null, default_reps_max: null,
+    default_duration_secs: 30, bodyweight_progression_id: null, equipment_required: [],
+    created_at: new Date().toISOString(),
+  },
+]
+
+export const SEED_PROGRESSIONS: BodyweightProgression[] = [
+  // Push progression
+  { id: "prog-push-1", exercise_id: "incline-push-up", variation_name: "Incline Push-up", sort_order: 1 },
+  { id: "prog-push-2", exercise_id: "push-up", variation_name: "Standard Push-up", sort_order: 2 },
+  { id: "prog-push-3", exercise_id: "wide-push-up", variation_name: "Wide Push-up", sort_order: 3 },
+  { id: "prog-push-4", exercise_id: "decline-push-up", variation_name: "Decline Push-up", sort_order: 4 },
+  { id: "prog-push-5", exercise_id: "diamond-push-up", variation_name: "Diamond Push-up", sort_order: 5 },
+  { id: "prog-push-6", exercise_id: "pike-push-up", variation_name: "Pike Push-up", sort_order: 6 },
+
+  // Pull progression
+  { id: "prog-pull-1", exercise_id: "dead-hang", variation_name: "Dead Hang", sort_order: 1 },
+  { id: "prog-pull-2", exercise_id: "scapular-pull", variation_name: "Scapular Pull", sort_order: 2 },
+
+  // Squat progression
+  { id: "prog-squat-1", exercise_id: "bodyweight-squat", variation_name: "Bodyweight Squat", sort_order: 1 },
+  { id: "prog-squat-2", exercise_id: "narrow-squat", variation_name: "Narrow Squat", sort_order: 2 },
+  { id: "prog-squat-3", exercise_id: "wide-squat", variation_name: "Wide Squat", sort_order: 3 },
+  { id: "prog-squat-4", exercise_id: "bulgarian-split-squat", variation_name: "Bulgarian Split Squat", sort_order: 4 },
+
+  // Hinge progression
+  { id: "prog-hinge-1", exercise_id: "glute-bridge", variation_name: "Glute Bridge", sort_order: 1 },
+  { id: "prog-hinge-2", exercise_id: "single-leg-glute-bridge", variation_name: "Single-leg Glute Bridge", sort_order: 2 },
+
+  // Core progression
+  { id: "prog-core-1", exercise_id: "plank", variation_name: "Plank", sort_order: 1 },
+  { id: "prog-core-2", exercise_id: "hollow-hold", variation_name: "Hollow Hold", sort_order: 2 },
+]
