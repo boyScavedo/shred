@@ -56,7 +56,7 @@ describe("processSyncQueue", () => {
     expect(item[0].retry_count).toBe(1)
   })
 
-  it("skips items with retry_count >= 5", async () => {
+  it("auto-resets stuck items (retry_count >= 5) and retries them", async () => {
     await db.sync_queue.add({
       id: "stuck",
       table_name: "exercises",
@@ -68,11 +68,11 @@ describe("processSyncQueue", () => {
     })
 
     const result = await processSyncQueue()
-    expect(result.processed).toBe(0)
-    expect(result.skipped).toBe(1)
+    // No DATABASE_URL in test env → item fails but is no longer skipped
+    expect(result.skipped).toBe(0)
 
-    const stillThere = await db.sync_queue.get("stuck")
-    expect(stillThere).toBeDefined()
+    const afterReset = await db.sync_queue.get("stuck")
+    expect(afterReset).toBeDefined()
   })
 
   it("removes items after successful processing", async () => {

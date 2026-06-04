@@ -75,26 +75,25 @@ async function callSyncApi(items: SyncItemPayload[]): Promise<Map<string, boolea
 }
 
 export async function processSyncQueue(): Promise<SyncResult> {
+  // Auto-reset stuck items — upserts are idempotent, safe to retry unconditionally
+  await resetSyncQueue()
+
   const items = await db.sync_queue.toArray()
   logger.info("sync", `processing queue: ${items.length} items`)
   let processed = 0
   let failed = 0
-  let skipped = 0
+  const skipped = 0
 
   items.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
 
-  const eligible = items.filter((i) => i.retry_count < MAX_RETRIES)
-  const stale = items.filter((i) => i.retry_count >= MAX_RETRIES)
-  skipped = stale.length
-
-  if (eligible.length === 0) {
-    logger.info("sync", `queue done — processed:0 failed:0 skipped:${skipped}`)
-    return { processed: 0, failed: 0, skipped }
+  if (items.length === 0) {
+    logger.info("sync", "queue empty")
+    return { processed: 0, failed: 0, skipped: 0 }
   }
 
-  const results = await callSyncApi(eligible)
+  const results = await callSyncApi(items)
 
-  for (const item of eligible) {
+  for (const item of items) {
     const success = results.get(item.id) ?? false
     if (success) {
       await db.sync_queue.delete(item.id)
